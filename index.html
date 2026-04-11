@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>University Management System</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="auth-screen" id="authScreen">
+    <div class="auth-card">
+      <h2 id="authTitle">Sign in to UniManage</h2>
+      <p class="auth-helper">Access student, course, department, and faculty management securely.</p>
+
+      <div class="auth-forms">
+        <form id="loginForm" class="auth-form">
+          <label>
+            <span>Email</span>
+            <input id="loginEmail" type="email" name="email" required />
+          </label>
+          <label>
+            <span>Password</span>
+            <input id="loginPassword" type="password" name="password" required />
+          </label>
+          <button type="submit" class="button">Sign in</button>
+        </form>
+
+        <form id="registerForm" class="auth-form hidden">
+          <label>
+            <span>Full name</span>
+            <input id="registerName" type="text" name="full_name" required />
+          </label>
+          <label>
+            <span>Email</span>
+            <input id="registerEmail" type="email" name="email" required />
+          </label>
+          <label>
+            <span>Password</span>
+            <input id="registerPassword" type="password" name="password" required />
+          </label>
+          <button type="submit" class="button">Create account</button>
+        </form>
+      </div>
+
+      <p class="auth-switch">
+        <span id="authPrompt">New to UniManage?</span>
+        <button type="button" class="link-button" id="toggleAuth">Create an account</button>
+      </p>
+      <div class="auth-error" id="authError"></div>
+    </div>
+  </div>
+
+  <div id="appShell">
+    <header class="site-header">
+      <div class="brand">
+        <img class="college-logo" src="https://universitykart.com/Content/upload/admin/wccmcx0o.yna.jpg" alt="College Logo" />
+        <h1>UniManage — SSLDV Varshney Engineering College</h1>
+        <p>Modern campus planning, student tracking and course administration for <a href="https://www.ssldv.ac.in" target="_blank" rel="noopener">SSLDV Varshney Engineering College</a>.</p>
+      </div>
+      <div class="header-actions">
+        <nav class="site-nav">
+          <a href="#overview">Home</a>
+          <a href="#about">About</a>
+          <a href="#campus">Campus</a>
+          <a href="#departments">Academics</a>
+          <a href="#faculty">Faculty</a>
+          <a href="#contact">Contact</a>
+          <a href="#dashboard">Dashboard</a>
+        </nav>
+        <div class="auth-controls">
+          <span id="currentUser" class="user-badge"></span>
+          <button class="button button-secondary" id="logoutBtn">Logout</button>
+        </div>
+      </div>
+    </header>
+
+  <main>
+    <section id="overview" class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">SSLDV Varshney Engineering College</span>
+        <h2>Modern campus planning for students, faculty and administration.</h2>
+        <p>Welcome to the UniManage portal, built to manage student records, academic departments, faculty, exams and campus operations from one secure dashboard.</p>
+        <div class="hero-actions">
+          <a href="#about" class="button">Learn More</a>
+          <a href="#dashboard" class="button button-secondary">Go to Dashboard</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <h3>Admissions</h3>
+          <p>Deliver a seamless student experience with personalized campus services.</p>
+        </div>
+        <div class="hero-card">
+          <h3>Teaching & Learning</h3>
+          <p>Empower faculty and department planning with live course and exam analytics.</p>
+        </div>
+        <div class="hero-card">
+          <h3>Campus Operations</h3>
+          <p>Track infrastructure, finance and training in one place.</p>
+        </div>
+      </div>
+    </section>
+    <section id="about" class="about-section">
+      <div class="about-content">
+        <h3>About SSLDV Varshney Engineering College</h3>
+        <p>We combine modern campus management with secure access for students, faculty and administrators. UniManage is designed to reflect the look and feel of the SSLDV website while providing powerful college administration tools.</p>
+      </div>
+      <div class="about-cards">
+        <div class="about-card">
+          <h4>Academic Excellence</h4>
+          <p>Coordinate courses, departments and results with clarity and control.</p>
+        </div>
+        <div class="about-card">
+          <h4>Student Success</h4>
+          <p>Keep student progress, enrollment and alum records in one place.</p>
+        </div>
+        <div class="about-card">
+          <h4>Campus Management</h4>
+          <p>Manage finance, facilities, HR and training from a single campus dashboard.</p>
+        </div>
+      </div>
+    </section>
+    <section id="campus" class="gallery-section">
+      <div class="section-head">
+        <span class="eyebrow">Campus Life</span>
+        <h3>Explore the SSLDV campus through key college spaces</h3>
+      </div>
+      <div class="gallery-grid">
+        <article class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80" alt="Main Campus Entrance" />
+          <div class="gallery-overlay">
+            <h4>Main Campus Entrance</h4>
+            <p>A welcoming gateway to academic excellence and student life.</p>
+          </div>
+        </article>
+        <article class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1531379410505-8cd00ef2e550?auto=format&fit=crop&w=1200&q=80" alt="Modern Lecture Halls" />
+          <div class="gallery-overlay">
+            <h4>Modern Lecture Halls</h4>
+            <p>Bright classrooms and modern laboratories for focused learning.</p>
+          </div>
+        </article>
+        <article class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1517638851339-4ae9c6d71d71?auto=format&fit=crop&w=1200&q=80" alt="Campus Library" />
+          <div class="gallery-overlay">
+            <h4>Campus Library</h4>
+            <p>A knowledge hub designed to support research and student study.</p>
+          </div>
+        </article>
+        <article class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1498588413025-0b9cf5f8f99a?auto=format&fit=crop&w=1200&q=80" alt="Student Lounge" />
+          <div class="gallery-overlay">
+            <h4>Student Lounge</h4>
+            <p>Spaces for collaboration, discussion and campus community events.</p>
+          </div>
+        </article>
+        <article class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80" alt="Research Labs" />
+          <div class="gallery-overlay">
+            <h4>Research Labs</h4>
+            <p>High-tech labs designed for hands-on engineering and science work.</p>
+          </div>
+        </article>
+        <article class="gallery-card">
+          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=1200&q=80" alt="Campus Events" />
+          <div class="gallery-overlay">
+            <h4>Campus Events</h4>
+            <p>A vibrant campus culture with workshops, seminars and student activities.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+    <section id="dashboard" class="dashboard-preview">
+      <div class="dashboard-header">
+        <h3>Dashboard Preview</h3>
+        <p>Access detailed student, course, faculty and operations modules after login.</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3 id="studentCount">0</h3>
+          <p>Students</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="courseCount">0</h3>
+          <p>Courses</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="examCount">0</h3>
+          <p>Exams</p>
+        </div>
+        <div class="stat-card">
+          <h3 id="departmentCount">0</h3>
+          <p>Departments</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="students" class="panel">
+      <div class="panel-header">
+        <h2>Students</h2>
+        <button class="button" id="addStudentBtn">Add Student</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="studentSearch" placeholder="Search students..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Email</th><th>Program</th><th>Status</th></tr>
+            </thead>
+            <tbody id="studentTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="courses" class="panel">
+      <div class="panel-header">
+        <h2>Courses</h2>
+        <button class="button" id="addCourseBtn">Add Course</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="courseSearch" placeholder="Search courses..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Course</th><th>Code</th><th>Department</th><th>Credits</th></tr>
+            </thead>
+            <tbody id="courseTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="exams" class="panel">
+      <div class="panel-header">
+        <h2>Exams</h2>
+        <button class="button" id="addExamBtn">Add Exam</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="examSearch" placeholder="Search exams..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Exam</th><th>Course</th><th>Date</th><th>Total</th><th>Passing</th></tr>
+            </thead>
+            <tbody id="examTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="examResults" class="panel">
+      <div class="panel-header">
+        <h2>Exam Results</h2>
+        <button class="button" id="addExamResultBtn">Record Result</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="examResultSearch" placeholder="Search exam results..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Student</th><th>Exam</th><th>Course</th><th>Score</th><th>Grade</th></tr>
+            </thead>
+            <tbody id="examResultTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="enrollments" class="panel">
+      <div class="panel-header">
+        <h2>Enrollments</h2>
+        <button class="button" id="addEnrollmentBtn">Add Enrollment</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="enrollmentSearch" placeholder="Search enrollments..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Student</th><th>Course</th><th>Status</th><th>Grade</th></tr>
+            </thead>
+            <tbody id="enrollmentTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="departments" class="panel">
+      <div class="panel-header">
+        <h2>Departments</h2>
+        <button class="button" id="addDepartmentBtn">Add Department</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="departmentSearch" placeholder="Search departments..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Department</th><th>Head</th><th>Building</th></tr>
+            </thead>
+            <tbody id="departmentTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="hr" class="panel">
+      <div class="panel-header">
+        <h2>HR Records</h2>
+        <button class="button" id="addEmployeeBtn">Add HR Record</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="employeeSearch" placeholder="Search HR records..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Role</th><th>Department</th><th>Email</th><th>Hire Date</th><th>Status</th><th>Salary</th></tr>
+            </thead>
+            <tbody id="employeeTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="alumni" class="panel">
+      <div class="panel-header">
+        <h2>Alumni Tracking</h2>
+        <button class="button" id="addAlumniBtn">Add Alumni Record</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="alumniSearch" placeholder="Search alumni..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Program</th><th>Degree</th><th>Graduation Year</th><th>Employer</th><th>Contact</th><th>Status</th></tr>
+            </thead>
+            <tbody id="alumniTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="testing" class="panel">
+      <div class="panel-header">
+        <h2>Testing</h2>
+        <button class="button" id="addTestingBtn">Add Testing Project</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="testingSearch" placeholder="Search testing projects..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Project</th><th>Category</th><th>Environment</th><th>Start</th><th>End</th><th>Status</th><th>Result</th></tr>
+            </thead>
+            <tbody id="testingTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="deployments" class="panel">
+      <div class="panel-header">
+        <h2>Deployments</h2>
+        <button class="button" id="addDeploymentBtn">Add Deployment</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="deploymentSearch" placeholder="Search deployments..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>System</th><th>Type</th><th>Environment</th><th>Deployed By</th><th>Date</th><th>Status</th><th>Notes</th></tr>
+            </thead>
+            <tbody id="deploymentTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="training" class="panel">
+      <div class="panel-header">
+        <h2>Training</h2>
+        <button class="button" id="addTrainingBtn">Add Training Program</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="trainingSearch" placeholder="Search training programs..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Program</th><th>Audience</th><th>Trainer</th><th>Start</th><th>End</th><th>Location</th><th>Status</th></tr>
+            </thead>
+            <tbody id="trainingTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="finance" class="panel">
+      <div class="panel-header">
+        <h2>Finance</h2>
+        <button class="button" id="addFinanceBtn">Add Finance Item</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="financeSearch" placeholder="Search finance items..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Item</th><th>Department</th><th>Allocated</th><th>Used</th><th>Period</th><th>Status</th></tr>
+            </thead>
+            <tbody id="financeTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="infrastructure" class="panel">
+      <div class="panel-header">
+        <h2>Infrastructure</h2>
+        <button class="button" id="addInfrastructureBtn">Add Asset</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="infrastructureSearch" placeholder="Search assets..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Asset</th><th>Category</th><th>Location</th><th>Condition</th><th>Last Maint.</th><th>Next Maint.</th><th>Value</th><th>Responsible</th></tr>
+            </thead>
+            <tbody id="infrastructureTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="faculty" class="panel">
+      <div class="panel-header">
+        <h2>Faculty</h2>
+        <button class="button" id="addFacultyBtn">Add Faculty</button>
+      </div>
+      <div class="panel-body">
+        <input type="text" id="facultySearch" placeholder="Search faculty..." />
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Name</th><th>Title</th><th>Department</th><th>Email</th><th>Hire Date</th><th>Status</th><th>Salary</th></tr>
+            </thead>
+            <tbody id="facultyTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal" id="modalForm">
+    <div class="modal-content">
+      <button class="close-btn" id="closeModal">×</button>
+      <h3 id="modalTitle">New Item</h3>
+      <form id="entityForm">
+        <div class="form-grid" id="formFields"></div>
+        <div class="form-actions">
+          <button type="submit" class="button">Save</button>
+          <button type="button" class="button button-secondary" id="cancelForm">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Built for Your College and student success. Visit <a href="https://www.yourcollege.edu" target="_blank" rel="noopener">Your College</a>.</p>
+  </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

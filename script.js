@@ -15,6 +15,7 @@ const state = {
   enrollments: [],
   exams: [],
   examResults: [],
+  assistantDetails: [],
 };
 
 const selectors = {
@@ -82,6 +83,13 @@ const selectors = {
   deploymentSearch: document.getElementById("deploymentSearch"),
   trainingSearch: document.getElementById("trainingSearch"),
   facultySearch: document.getElementById("facultySearch"),
+  assistantForm: document.getElementById("assistantForm"),
+  assistantDetailForm: document.getElementById("assistantDetailForm"),
+  assistantInput: document.getElementById("assistantInput"),
+  assistantMessages: document.getElementById("assistantMessages"),
+  assistantSuggestions: document.getElementById("assistantSuggestions"),
+  assistantDetailInput: document.getElementById("assistantDetailInput"),
+  assistantDetailList: document.getElementById("assistantDetailList"),
   employeeSearch: document.getElementById("employeeSearch"),
   financeSearch: document.getElementById("financeSearch"),
   infrastructureSearch: document.getElementById("infrastructureSearch"),
@@ -306,6 +314,134 @@ const renderTables = () => {
       <td>${Number(member.salary).toLocaleString()}</td>
     </tr>
   `);
+};
+
+const renderAiMessage = (from, text) => {
+  if (!selectors.assistantMessages) return;
+  const message = document.createElement("div");
+  message.className = `assistant-message assistant-${from}`;
+  message.textContent = text;
+  selectors.assistantMessages.appendChild(message);
+  selectors.assistantMessages.scrollTop = selectors.assistantMessages.scrollHeight;
+};
+
+const getAiReply = (query) => {
+  const text = String(query || "").trim();
+  const normalized = text.toLowerCase();
+  const studentCount = state.students.length;
+  const courseCount = state.courses.length;
+  const examCount = state.exams.length;
+  const departmentCount = state.departments.length;
+  const facultyCount = state.faculty.length;
+  const enrollmentCount = state.enrollments.length;
+
+  if (!text) {
+    return "Please ask a question so I can help.";
+  }
+
+  if ((normalized.includes("student") && normalized.includes("count")) || normalized.includes("how many students")) {
+    return `There are currently ${studentCount} students registered in the system.`;
+  }
+
+  if (normalized.includes("course") && (normalized.includes("offer") || normalized.includes("balance") || normalized.includes("available"))) {
+    const departments = new Set(state.courses.map(course => course.department)).size;
+    return `There are ${courseCount} courses offered across ${departments} departments. Review enrollment trends to keep class sizes balanced.`;
+  }
+
+  if (normalized.includes("exam")) {
+    return `I see ${examCount} exam records in the system. Keep exam schedules and passing criteria updated for stronger student outcomes.`;
+  }
+
+  if (normalized.includes("enroll") || normalized.includes("admission")) {
+    return `There are ${enrollmentCount} enrollments recorded. Check popular courses and consider waitlist or capacity updates.`;
+  }
+
+  if (normalized.includes("faculty")) {
+    return `There are ${facultyCount} faculty members in the system. Monitor workload and scheduling to support their teaching plans.`;
+  }
+
+  if (normalized.includes("department")) {
+    return `The system includes ${departmentCount} departments. Department-level summaries are useful for staffing and resource planning.`;
+  }
+
+  if (normalized.includes("finance") || normalized.includes("budget")) {
+    return `Finance insights are available by tracking budget and spending records. Add items in the Finance module for stronger analysis.`;
+  }
+
+  return `I can help with students, courses, exams, enrollments, faculty, and campus planning. Try asking, for example:\n- "How many students are registered?"\n- "Suggest course balance"\n- "What should I do about exams?"`;
+};
+
+const handleAssistantSubmit = (event) => {
+  event.preventDefault();
+  if (!selectors.assistantInput) return;
+  const prompt = selectors.assistantInput.value.trim();
+  if (!prompt) return;
+  renderAiMessage("user", prompt);
+  const reply = getAiReply(prompt);
+  renderAiMessage("bot", reply);
+  selectors.assistantInput.value = "";
+};
+
+const handleAssistantDetailSubmit = (event) => {
+  event.preventDefault();
+  if (!selectors.assistantDetailInput) return;
+  const text = selectors.assistantDetailInput.value.trim();
+  if (!text) return;
+  addAssistantDetail(text);
+  selectors.assistantDetailInput.value = "";
+};
+
+const loadAssistantDetails = () => {
+  try {
+    state.assistantDetails = JSON.parse(localStorage.getItem("assistantDetails") || "[]");
+    if (!Array.isArray(state.assistantDetails)) {
+      state.assistantDetails = [];
+    }
+  } catch {
+    state.assistantDetails = [];
+  }
+};
+
+const saveAssistantDetails = () => {
+  localStorage.setItem("assistantDetails", JSON.stringify(state.assistantDetails));
+};
+
+const renderAssistantDetails = () => {
+  if (!selectors.assistantDetailList) return;
+  selectors.assistantDetailList.innerHTML = state.assistantDetails.map(detail => `
+    <div class="assistant-detail-item">
+      <div>${detail.text}</div>
+      <time datetime="${detail.timestamp}">${new Date(detail.timestamp).toLocaleString()}</time>
+    </div>
+  `).join("");
+};
+
+const addAssistantDetail = (text) => {
+  const detail = {
+    text: String(text).trim(),
+    timestamp: new Date().toISOString(),
+  };
+  if (!detail.text) return;
+  state.assistantDetails.unshift(detail);
+  saveAssistantDetails();
+  renderAssistantDetails();
+};
+
+const initAiAssistant = () => {
+  if (!selectors.assistantMessages) return;
+  loadAssistantDetails();
+  renderAiMessage("bot", "Welcome to the Campus AI Assistant! Ask about students, courses, exams, enrollments or campus operations.");
+  renderAssistantDetails();
+  if (selectors.assistantSuggestions) {
+    selectors.assistantSuggestions.querySelectorAll("button").forEach(button => {
+      button.addEventListener("click", () => {
+        const prompt = button.textContent.trim();
+        if (!selectors.assistantInput) return;
+        selectors.assistantInput.value = prompt;
+        selectors.assistantInput.focus();
+      });
+    });
+  }
 };
 
 const setAuthState = (user, token) => {
@@ -879,6 +1015,20 @@ const attachEvents = () => {
   selectors.addTrainingBtn.addEventListener("click", showTrainingForm);
   selectors.addAlumniBtn.addEventListener("click", showAlumniForm);
   selectors.addFacultyBtn.addEventListener("click", showFacultyForm);
+  if (selectors.assistantForm) {
+    selectors.assistantForm.addEventListener("submit", handleAssistantSubmit);
+  }
+  if (selectors.assistantDetailForm) {
+    selectors.assistantDetailForm.addEventListener("submit", handleAssistantDetailSubmit);
+  }
+  if (selectors.assistantSuggestions) {
+    selectors.assistantSuggestions.addEventListener("click", event => {
+      const button = event.target.closest("button");
+      if (!button || !selectors.assistantInput) return;
+      selectors.assistantInput.value = button.textContent.trim();
+      selectors.assistantInput.focus();
+    });
+  }
   selectors.closeModal.addEventListener("click", closeModal);
   selectors.cancelForm.addEventListener("click", closeModal);
   selectors.modal.addEventListener("click", event => {
@@ -903,6 +1053,7 @@ const init = async () => {
   await checkSession();
   attachEvents();
   addSearchHandlers();
+  initAiAssistant();
 };
 
 const startApp = async () => {

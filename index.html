@@ -64,6 +64,7 @@
           <a href="#campus">Campus</a>
           <a href="#departments">Academics</a>
           <a href="#faculty">Faculty</a>
+          <a href="#assistant">AI Assistant</a>
           <a href="#contact">Contact</a>
           <a href="#dashboard">Dashboard</a>
         </nav>
@@ -191,6 +192,39 @@
         <div class="stat-card">
           <h3 id="departmentCount">0</h3>
           <p>Departments</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="assistant" class="assistant-section panel">
+      <div class="panel-header">
+        <div>
+          <h2>Campus AI Assistant</h2>
+          <p class="assistant-subtitle">Ask the assistant for student, course, exam or campus planning suggestions.</p>
+        </div>
+      </div>
+      <div class="assistant-container">
+        <div class="assistant-messages" id="assistantMessages" aria-live="polite"></div>
+        <form id="assistantForm" class="assistant-form">
+          <input id="assistantInput" type="text" placeholder="Ask the AI assistant..." aria-label="AI assistant question" />
+          <button type="submit" class="button">Ask AI</button>
+        </form>
+        <div class="assistant-suggestions" id="assistantSuggestions">
+          <button type="button">How many students are registered?</button>
+          <button type="button">Suggest course balance</button>
+          <button type="button">What should I do about exams?</button>
+          <button type="button">Review faculty availability</button>
+        </div>
+        <div class="assistant-notes">
+          <div class="assistant-notes-header">
+            <h3>Save Details</h3>
+            <p>Store your assistant notes and details for later review.</p>
+          </div>
+          <form id="assistantDetailForm" class="assistant-detail-form">
+            <textarea id="assistantDetailInput" placeholder="Write details to save..." rows="4"></textarea>
+            <button type="submit" class="button">Save Detail</button>
+          </form>
+          <div class="assistant-detail-list" id="assistantDetailList"></div>
         </div>
       </div>
     </section>

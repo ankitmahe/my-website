@@ -38,6 +38,9 @@ const selectors = {
   alumniTable: document.getElementById("alumniTable"),
   financeTable: document.getElementById("financeTable"),
   infrastructureTable: document.getElementById("infrastructureTable"),
+  testingTable: document.getElementById("testingTable"),
+  deploymentTable: document.getElementById("deploymentTable"),
+  trainingTable: document.getElementById("trainingTable"),
   employeeTable: document.getElementById("employeeTable"),
   enrollmentTable: document.getElementById("enrollmentTable"),
   studentCount: document.getElementById("studentCount"),
@@ -160,6 +163,7 @@ const updateStats = () => {
 };
 
 const renderTable = (items, container, mapper) => {
+  if (!container) return;
   container.innerHTML = items.map(mapper).join("");
 };
 
@@ -646,7 +650,7 @@ const showStudentForm = () => {
 
 const showCourseForm = () => {
   openModal("Add Course", [
-    { label: "Course Title", name: "title", element: `<input name="title" required />` },
+    { label: "Course Name", name: "title", element: `<input name="title" required />` },
     { label: "Course Code", name: "code", element: `<input name="code" required />` },
     { label: "Department", name: "department", element: `<input name="department" required />` },
     { label: "Credits", name: "credits", element: `<input name="credits" type="number" min="1" max="6" value="3" required />` },

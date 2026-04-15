@@ -645,9 +645,131 @@ app.get("/api/auth/me", authRequired, (req, res) => {
   res.json(req.user);
 });
 
+const formatRollNo = (id) => `STU${String(id).padStart(3, "0")}`;
+const parseRollNo = (rollNo) => {
+  const match = String(rollNo).match(/^STU0*(\d+)$/i);
+  if (match) return Number(match[1]);
+  const numeric = Number(rollNo);
+  return Number.isInteger(numeric) && numeric > 0 ? numeric : null;
+};
+
 app.post("/api/auth/logout", authRequired, (req, res) => {
   sessions.delete(req.token);
   res.json({ ok: true });
+});
+
+app.get("/courses", (req, res) => {
+  db.all("SELECT id, title AS name, code FROM courses", (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(rows);
+  });
+});
+
+app.post("/courses", (req, res) => {
+  const { name, code } = req.body;
+  if (!name || !code) {
+    return res.status(400).json({ error: "Course name and code are required" });
+  }
+  const department = "General";
+  const credits = 3;
+  db.run(
+    "INSERT INTO courses (title, code, department, credits) VALUES (?, ?, ?, ?)",
+    [name, code, department, credits],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.status(201).json({ id: this.lastID });
+    }
+  );
+});
+
+app.get("/faculty", (req, res) => {
+  db.all("SELECT id, name, title AS subject FROM faculty", (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    res.json(rows);
+  });
+});
+
+app.post("/faculty", (req, res) => {
+  const { name, subject } = req.body;
+  if (!name || !subject) {
+    return res.status(400).json({ error: "Faculty name and subject are required" });
+  }
+  const email = `${name.toLowerCase().replace(/\s+/g, ".")}@university.edu`;
+  const title = subject;
+  const department = "General";
+  const hire_date = new Date().toISOString().slice(0, 10);
+  const status = "Active";
+  const salary = 0;
+
+  db.run(
+    "INSERT INTO faculty (name, title, department, email, hire_date, status, salary) VALUES (?, ?, ?, ?, ?, ?, ?)",
+    [name, title, department, email, hire_date, status, salary],
+    function (err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.status(201).json({ id: this.lastID });
+    }
+  );
+});
+
+app.get("/students", (req, res) => {
+  const courseCode = req.query.course;
+  let sql = "SELECT id, name FROM students";
+  const params = [];
+
+  if (courseCode) {
+    sql = `SELECT s.id, s.name
+      FROM students s
+      JOIN enrollments e ON e.student_id = s.id
+      JOIN courses c ON e.course_id = c.id
+      WHERE lower(c.code) = lower(?)`;
+    params.push(courseCode);
+  }
+
+  db.all(sql, params, (err, rows) => {
+    if (err) return res.status(500).json({ error: err.message });
+    const students = rows.map((row) => ({ id: String(row.id), name: row.name, rollNo: formatRollNo(row.id) }));
+    res.json(students);
+  });
+});
+
+app.post("/attendance", (req, res) => {
+  const { records } = req.body;
+  if (!Array.isArray(records)) {
+    return res.status(400).json({ error: "Attendance records are required" });
+  }
+  res.status(201).json({ ok: true, received: records.length });
+});
+
+app.get("/results/:rollNo", (req, res) => {
+  const studentId = parseRollNo(req.params.rollNo);
+  if (!studentId) {
+    return res.status(400).json({ error: "Invalid roll number" });
+  }
+
+  const sql = `SELECT s.name, er.score, er.grade
+    FROM exam_results er
+    JOIN enrollments e ON er.enrollment_id = e.id
+    JOIN students s ON e.student_id = s.id
+    WHERE s.id = ?
+    LIMIT 1`;
+
+  db.get(sql, [studentId], (err, row) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!row) return res.status(404).json({ error: "Result not found" });
+    res.json({ name: row.name, marks: row.score, grade: row.grade });
+  });
+});
+
+app.get("/fees/:studentId", (req, res) => {
+  const studentId = parseRollNo(req.params.studentId);
+  if (!studentId) {
+    return res.status(400).json({ error: "Invalid student ID" });
+  }
+
+  const totalFees = 100000;
+  const paidAmount = Math.min(totalFees, 40000 + studentId * 500);
+  const dueAmount = totalFees - paidAmount;
+  res.json({ totalFees, paidAmount, dueAmount });
 });
 
 app.get("/api/:entity", authRequired, (req, res) => {

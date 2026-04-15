@@ -9,44 +9,58 @@
 <body>
   <div class="auth-screen" id="authScreen">
     <div class="auth-card">
-      <h2 id="authTitle">Sign in to UniManage</h2>
-      <p class="auth-helper">Access student, course, department, and faculty management securely.</p>
-
-      <div class="auth-forms">
-        <form id="loginForm" class="auth-form">
-          <label>
-            <span>Email</span>
-            <input id="loginEmail" type="email" name="email" required />
-          </label>
-          <label>
-            <span>Password</span>
-            <input id="loginPassword" type="password" name="password" required />
-          </label>
-          <button type="submit" class="button">Sign in</button>
-        </form>
-
-        <form id="registerForm" class="auth-form hidden">
-          <label>
-            <span>Full name</span>
-            <input id="registerName" type="text" name="full_name" required />
-          </label>
-          <label>
-            <span>Email</span>
-            <input id="registerEmail" type="email" name="email" required />
-          </label>
-          <label>
-            <span>Password</span>
-            <input id="registerPassword" type="password" name="password" required />
-          </label>
-          <button type="submit" class="button">Create account</button>
-        </form>
+      <div class="auth-hero">
+        <img
+          src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1600&q=80"
+          alt="College campus poster"
+        />
+        <div class="auth-hero-overlay">
+          <span class="poster-eyebrow">SSLDV Varshney Engineering College</span>
+          <h2>Welcome to UniManage</h2>
+          <p>Secure portal for campus operations, student records, faculty management and academic administration.</p>
+        </div>
       </div>
 
-      <p class="auth-switch">
-        <span id="authPrompt">New to UniManage?</span>
-        <button type="button" class="link-button" id="toggleAuth">Create an account</button>
-      </p>
-      <div class="auth-error" id="authError"></div>
+      <div class="auth-content">
+        <h2 id="authTitle">Sign in to UniManage</h2>
+        <p class="auth-helper">Access student, course, department, and faculty management securely.</p>
+
+        <div class="auth-forms">
+          <form id="loginForm" class="auth-form">
+            <label>
+              <span>Email</span>
+              <input id="loginEmail" type="email" name="email" required />
+            </label>
+            <label>
+              <span>Password</span>
+              <input id="loginPassword" type="password" name="password" required />
+            </label>
+            <button type="submit" class="button">Sign in</button>
+          </form>
+
+          <form id="registerForm" class="auth-form hidden">
+            <label>
+              <span>Full name</span>
+              <input id="registerName" type="text" name="full_name" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input id="registerEmail" type="email" name="email" required />
+            </label>
+            <label>
+              <span>Password</span>
+              <input id="registerPassword" type="password" name="password" required />
+            </label>
+            <button type="submit" class="button">Create account</button>
+          </form>
+        </div>
+
+        <p class="auth-switch">
+          <span id="authPrompt">New to UniManage?</span>
+          <button type="button" class="link-button" id="toggleAuth">Create an account</button>
+        </p>
+        <div class="auth-error" id="authError"></div>
+      </div>
     </div>
   </div>
 
